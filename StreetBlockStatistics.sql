@@ -97,26 +97,31 @@ GROUP BY
 	[Input_FID]
 
 
+-- master
+
 Select  
 	Polygon.[OBJECTID],
 	Polygon.[Input_FID],
 	[ADM_2],
-	CENSUS.POP as TotalPopulation,
-	CENSUS.M as MalePopulation,
-	CENSUS.F as FemalePopulation,
-	CENSUS.AGE0 as AGE0Population,
-	CENSUS.AGE15 as AGE15Population,
-	CENSUS.AGE65 as AGE65Population,
-	CENSUS.Address as PopulationAddress,
+	CENSUS.POP									as TotalPopulation,
+	CENSUS.M									as MalePopulation,
+	CENSUS.F									as FemalePopulation,
+	CENSUS.AGE0									as AGE0Population,
+	CENSUS.AGE15								as AGE15Population,
+	CENSUS.AGE65								as AGE65Population,
+	CENSUS.Address								as PopulationAddress,
 	MessageCount,
-	MessageCount/CENSUS.POP as MessagesPerTotalPopulation
+	MessageCount/CENSUS.POP						as MessagesPerTotalPopulation,
 	ResidentsMessageCount,
-	ResidentsMessageCount/CENSUS.POP as ResidentMessagesPerTotalPopulation
+	ResidentsMessageCount/CENSUS.POP			as ResidentMessagesPerTotalPopulation,
 	UserCount,
-	UserCount/CENSUS.POP as UsersPerTotalPopulation
+	UserCount/CENSUS.POP						as UsersPerTotalPopulation,
 	ResidentsUserCount,
-	ResidentsUserCount/CENSUS.POP as ResidentUsersPerTotalPopulation,
-	Polygon.Shape.STArea() as  AREA_in_SQM,
+	ResidentsUserCount/CENSUS.POP				as ResidentUsersPerTotalPopulation,
+	Polygon.Shape.STArea()						as AREA_in_SQM,
+	CENSUS.POP/Polygon.Shape.STArea()			as PopulationDensity,
+	MessageCount/Polygon.Shape.STArea()			as MessageDensity,
+	ResidentsUserCount/Polygon.Shape.STArea()	as WeiboResidtesDensity,
 	Polygon.Shape
 FROM
 	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID] as Polygon
