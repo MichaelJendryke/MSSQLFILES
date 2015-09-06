@@ -98,7 +98,7 @@ GROUP BY
 
 
 -- master
-
+drop table temp3
 Select  
 	Polygon.[OBJECTID],
 	Polygon.[Input_FID],
@@ -111,20 +111,24 @@ Select
 	CENSUS.AGE65								as AGE65Population,
 	CENSUS.Address								as PopulationAddress,
 	MessageCount,
-	MessageCount/CENSUS.POP						as MessagesPerTotalPopulation,
+	MessageCount/CENSUS.POP						as MessagesPerTotalPop,
 	ResidentsMessageCount,
-	ResidentsMessageCount/CENSUS.POP			as ResidentMessagesPerTotalPopulation,
+	ResidentsMessageCount/CENSUS.POP			as ResidentMessagesPerTotalPop,
 	UserCount,
-	UserCount/CENSUS.POP						as UsersPerTotalPopulation,
+	UserCount/CENSUS.POP						as UsersPerTotalPop,
 	ResidentsUserCount,
-	ResidentsUserCount/CENSUS.POP				as ResidentUsersPerTotalPopulation,
+	ResidentsUserCount/CENSUS.POP				as ResidentUsersPerTotalPop,
 	Polygon.Shape.STArea()						as AREA_in_SQM,
 	CENSUS.POP/Polygon.Shape.STArea()			as PopulationDensity,
+	(CENSUS.POP/Polygon.Shape.STArea())/ResidentsUserCount			as ResUsrCntPerPopDens,
 	MessageCount/Polygon.Shape.STArea()			as MessageDensity,
-	ResidentsUserCount/Polygon.Shape.STArea()	as WeiboResidtesDensity,
+	ResidentsUserCount/Polygon.Shape.STArea()	as WeiboResidentsDensity,
 	Polygon.Shape
+INTO 
+	temp3
 FROM
 	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID] as Polygon
+
 LEFT OUTER JOIN
 	temp1
 ON	
