@@ -149,6 +149,9 @@ WHERE
 select distinct Shape.STSrid from [dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID]
 
 
+
+-- THE FOLLOWING HAS TO BE REVISED, Probably OK but output unknown
+
 -------------------
 -- 3.
 -------------------
