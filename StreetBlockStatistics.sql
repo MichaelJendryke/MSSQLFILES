@@ -118,9 +118,10 @@ Select
 	UserCount/CENSUS.POP						as UsersPerTotalPop,
 	ResidentsUserCount,
 	ResidentsUserCount/CENSUS.POP				as ResidentUsersPerTotalPop,
+	CENSUS.POP/ResidentsUserCount/Polygon.Shape.STArea()				as ResUsrPerTotalPopPerArea,
 	Polygon.Shape.STArea()						as AREA_in_SQM,
 	CENSUS.POP/Polygon.Shape.STArea()			as PopulationDensity,
-	(CENSUS.POP/Polygon.Shape.STArea())/ResidentsUserCount			as ResUsrCntPerPopDens,
+	ResidentsUserCount/(CENSUS.POP/Polygon.Shape.STArea())			as ResUsrCntPerPopDens,
 	MessageCount/Polygon.Shape.STArea()			as MessageDensity,
 	ResidentsUserCount/Polygon.Shape.STArea()	as WeiboResidentsDensity,
 	Polygon.Shape
