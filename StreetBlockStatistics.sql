@@ -27,33 +27,39 @@ WHERE
 ------------------------------------------------------------------------------------------------------
 -- 1. Create Table that links msgID and objectID from STREET_BLOCK_DISSOLVED_THIESSEN_ID polygons  ---
 ------------------------------------------------------------------------------------------------------
+-- around 2h runtime for Shanghai with over 30000 polygons
+--
 USE 
 	weiboDEV
 GO
 DROP TABLE 
-	LINK_msgID_userID_to_STREET_BLOCKS_Input_FID_Shanghai_262
+	-- the link between street blocks and messages!!!
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID
 Select 
 	[OBJECTID],
-	[Input_FID],
+	[STREETBLOCKID],-- this is equal to the target_id from the spatial join tool in ArcMAP
 	[msgID],
 	[userID]
-INTO 
-	LINK_msgID_userID_to_STREET_BLOCKS_Input_FID_Shanghai_262
+INTO
+    -- the link between street blocks and messages!!! 
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID
 FROM 
+	-- the original points
 	[dbo].[NBT4_exact_copy_GEO] as point 
 WITH(nolock,INDEX([SpatialIndex-20150619-114940]))
 JOIN 
-	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID] as polygon
+	-- the street block layer
+	[dbo].[ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA] as polygon
 ON 
 	point.location.STIntersects(polygon.Shape) =1
 WHERE
-	polygon.ADM_2 = 262
+	polygon.GADM_ID_2 = 262
 
 USE [weiboDEV]
 
 GO
 
-CREATE UNIQUE CLUSTERED INDEX [ClusteredIndex-20150905-141653] ON [dbo].[LINK_msgID_userID_to_STREET_BLOCKS_Input_FID_Shanghai_262]
+CREATE UNIQUE CLUSTERED INDEX [ClusteredIndex-20150905-141653] ON [dbo].[SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID]
 (
 	[msgID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -67,16 +73,17 @@ GO
 USE
 	weiboDEV
 GO
+drop table temp1
 SELECT
-	[Input_FID],
+	[STREETBLOCKID], -- unique id of each Street Block polygon
 	COUNT (LINK1.[msgID]) AS MessageCount,
 	Count(Distinct LINK1.[userID]) AS UserCount
 INTO
 	temp1
 FROM
-	LINK_msgID_userID_to_STREET_BLOCKS_Input_FID_Shanghai_262 as LINK1
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID as LINK1
 GROUP BY
-	[Input_FID]
+	[STREETBLOCKID]
 
 
 SELECT
