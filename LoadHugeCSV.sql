@@ -76,3 +76,41 @@ GO
 SELECT top 1000 *
   FROM [dbo].[BIG_FULL]
 GO
+
+-- RENAME BIG_FULL
+sp_rename BIG_FULL, COH_FULL_filtered
+
+USE 
+	weiboDEV
+GO
+DROP TABLE 
+	-- the link between street blocks and messages!!!
+	COH_FULL_filtered_ID_TO_STREETBLOCKID
+Select 
+	[ID],
+	[STREETBLOCKID]-- this is equal to the target_id from the spatial join tool in ArcMAP
+INTO
+    -- the link between street blocks and messages!!! 
+	COH_FULL_filtered_ID_TO_STREETBLOCKID
+FROM 
+	-- the original points
+	[dbo].[COH_FULL_filtered] as point 
+WITH(nolock,INDEX([SpatialIndex_BIG_FULL]))
+JOIN 
+	-- the street block layer
+	[dbo].[ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA] as polygon
+ON 
+	point.shape.STIntersects(polygon.Shape) =1
+WHERE
+	polygon.GADM_ID_2 = 262
+
+USE [weiboDEV]
+
+GO
+
+CREATE UNIQUE CLUSTERED INDEX [ClusteredIndex-20150905-141653] ON [dbo].[SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID]
+(
+	[msgID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+
+GO
