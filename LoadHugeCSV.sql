@@ -1,57 +1,77 @@
+-------------------------------------------------------------------
+--  0   	STACK 1 OR 2
+-------------------------------------------------------------------
 use weiboDEV
 go
 truncate table [dbo].[BIG_FULL]
+SELECT top 0 * into [dbo].[BIG_FULL] FROM [dbo].[BIG_FULL_STACK_1_template]
+SELECT top 0 * into [dbo].[BIG_FULL] FROM [dbo].[BIG_FULL_STACK_2_template]
 
-DROP INDEX [SpatialIndex_BIG_FULL] ON [dbo].[BIG_FULL]
-ALTER TABLE [dbo].[BIG_FULL] DROP CONSTRAINT [PK_BIG_FULL]
-alter table [dbo].[BIG_FULL] DROP COLUMN ID
-alter table [dbo].[BIG_FULL] DROP COLUMN shape
 
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_1.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_2.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_3.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_4.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_5.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_6.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_7.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_8.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_9.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_10.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_11.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_12.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_13.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_14.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_15.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_16.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_17.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_18.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_19.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_20.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_21.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_22.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_23.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_24.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-BULK INSERT BIG_FULL FROM 'F:\LINUX\1_Stack_SH\SM\SBAsubsets\resultfilteredFULL_25.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
-
--- ADD AN INDEX COLUMN
--- ALTER TABLE BIG_FULL DROP COLUMN  ID;
-ALTER TABLE BIG_FULL ADD ID int IDENTITY(1,1);
-
-alter table [weiboDEV].[dbo].[BIG_FULL]
-add shape  geography NULL;
-
-update [weiboDEV].[dbo].[BIG_FULL]
-  set shape = geography::STGeomFromText('POINT('+convert(varchar(20),lon)+' '+convert(varchar(20),lat)+')',4326);
-
+-------------------------------------------------------------------
+--  1   	LOAD DATA FROM MATLAB's CSV FILES INTO SQL SERVER
+-------------------------------------------------------------------
+--
+--			RENAME if necessary!
+--
 USE [weiboDEV]
 GO
-ALTER TABLE [dbo].[BIG_FULL] ADD  CONSTRAINT [PK_BIG_FULL] PRIMARY KEY CLUSTERED 
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_1.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_2.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_3.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_4.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_5.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_6.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_7.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_8.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_9.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_10.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_11.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_12.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_13.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_14.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_15.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_16.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_17.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_18.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_19.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_20.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_21.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_22.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_23.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_24.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_25.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_26.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+BULK INSERT BIG_FULL FROM 'F:\LINUX\2_Stack_SH\SM\SBAsubsets\resultfilteredEQFULL_27.csv' WITH(FIRSTROW = 1,FIELDTERMINATOR = ',',ROWTERMINATOR = '#', TABLOCK)
+
+
+-------------------------------------------------------------------
+--  2   	ADD AN INDEX COLUMN PK and SI
+-------------------------------------------------------------------
+-- ID
+USE [weiboDEV]
+GO
+ALTER TABLE 
+	BIG_FULL 
+ADD 
+	ID int IDENTITY(1,1)
+
+ALTER TABLE [dbo].[BIG_FULL] ADD  CONSTRAINT [PK_BIG_FULL3] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 GO
-
+-- SPATIAL
 USE [weiboDEV]
+GO
+ALTER TABLE 
+	[weiboDEV].[dbo].[BIG_FULL]
+ADD
+	shape  geography NULL;
+GO
+UPDATE
+	[weiboDEV].[dbo].[BIG_FULL]
+SET shape = geography::STGeomFromText('POINT('+convert(varchar(20),lon)+' '+convert(varchar(20),lat)+')',4326);
 GO
 SET ARITHABORT ON
 SET CONCAT_NULL_YIELDS_NULL ON
@@ -61,8 +81,6 @@ SET ANSI_PADDING ON
 SET ANSI_WARNINGS ON
 SET NUMERIC_ROUNDABORT OFF
 GO
-
-/****** Object:  Index [SpatialIndex-20150619-114940]    Script Date: 11/11/2015 2:33:06 PM ******/
 CREATE SPATIAL INDEX [SpatialIndex_BIG_FULL] ON [weiboDEV].[dbo].[BIG_FULL]
 (
 	[shape]
@@ -71,49 +89,69 @@ WITH (
 CELLS_PER_OBJECT = 4000, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
 
-USE [weiboDEV]
-GO
-SELECT top 1000 *
-  FROM [dbo].[BIG_FULL]
-GO
 
--- RENAME BIG_FULL
-sp_rename BIG_FULL, COH_FULL_filtered
+-------------------------------------------------------------------
+--  3   	RENAMING
+-------------------------------------------------------------------
+--
+--			RENAME IS NECESSARY!
+--
+declare @st nvarchar(14), @stPK nvarchar(14), @stSI nvarchar(14)
+set @st = 'STACK2_rfEQ'
+set @stPK = 'PK_' + @st
+set @stSI = 'SI_' + @st
+--EXEC sp_rename N'BIG_FULL', @st
+EXEC sp_rename N'weiboDEV.dbo.STACK2_rfEQ.PK_BIG_FULL3',          @stPK, N'INDEX'; 
+EXEC sp_rename N'weiboDEV.dbo.STACK2_rfEQ.SpatialIndex_BIG_FULL', @stSI, N'INDEX'; 
 
+sp_rename BIG_FULL_ID_TO_STREETBLOCKID, STACK2_LINK_ID_to_STREETBLOOKID
+EXEC sp_rename N'weiboDEV.dbo.STACK2_LINK_ID_to_STREETBLOOKID.PK_BIG_FULL_ID_TO_STREETBLOCKID',    N'PK_STACK2_ID',      N'INDEX'; 
+EXEC sp_rename N'weiboDEV.dbo.STACK2_LINK_ID_to_STREETBLOOKID.ClusteredIndex-On-ID',               N'CL_STACK2_ID',      N'INDEX';
+EXEC sp_rename N'weiboDEV.dbo.STACK2_LINK_ID_to_STREETBLOOKID.NonClusteredIndex-On-STREETBLOCKID', N'nonCL_STACK2_SBID', N'INDEX';
+
+
+-------------------------------------------------------------------
+--  4   	LINK THE POINTS WITH THE STREETBLOCKS
+-------------------------------------------------------------------
+--
+--			RENAME if necessary!
+--
 USE 
-	weiboDEV
+weiboDEV
 GO
 DROP TABLE 
 	-- the link between street blocks and messages!!!
-	COH_FULL_filtered_ID_TO_STREETBLOCKID
+	STACK2_LINK_ID_to_STREETBLOOKID
 Select 
 	[ID],
 	[STREETBLOCKID]-- this is equal to the target_id from the spatial join tool in ArcMAP
 INTO
     -- the link between street blocks and messages!!! 
-	COH_FULL_filtered_ID_TO_STREETBLOCKID
+	STACK2_LINK_ID_to_STREETBLOOKID
 FROM 
 	-- the original points
-	[dbo].[COH_FULL_filtered] as point 
-WITH(nolock,INDEX([SpatialIndex_BIG_FULL]))
+	[dbo].[STACK2_rfEQ] as point 
+WITH(nolock,INDEX([SI_STACK2_rfEQ]))
 JOIN 
 	-- the street block layer
 	[dbo].[ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA] as polygon
 ON 
 	point.shape.STIntersects(polygon.Shape) =1
 WHERE
-	polygon.GADM_ID_2 = 262
-
-USE [weiboDEV]
-
+	polygon.GADM_ID_2 = 262;
 GO
 
--- CREATE INDEX FOR BOTH COLUMNS
+
+-------------------------------------------------------------------
+--  5   	CREATE INDICES for the LINK Table
+-------------------------------------------------------------------
+--
+--			RENAME if necessary!
+--
 USE [weiboDEV]
 GO
 
-/****** Object:  Index [ClusteredIndex-On-ID]    Script Date: 11/16/2015 1:03:52 PM ******/
-CREATE UNIQUE CLUSTERED INDEX [ClusteredIndex-On-ID] ON [dbo].[COH_FULL_filtered_ID_TO_STREETBLOCKID]
+CREATE UNIQUE CLUSTERED INDEX [ClusteredIndex-On-ID] ON [dbo].[BIG_FULL_ID_TO_STREETBLOCKID]
 (
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -121,8 +159,7 @@ GO
 USE [weiboDEV]
 GO
 
-/****** Object:  Index [NonClusteredIndex-On-STREETBLOCKID]    Script Date: 11/16/2015 1:04:05 PM ******/
-CREATE NONCLUSTERED INDEX [NonClusteredIndex-On-STREETBLOCKID] ON [dbo].[COH_FULL_filtered_ID_TO_STREETBLOCKID]
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-On-STREETBLOCKID] ON [dbo].[BIG_FULL_ID_TO_STREETBLOCKID]
 (
 	[STREETBLOCKID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -130,206 +167,8 @@ GO
 USE [weiboDEV]
 GO
 
-/****** Object:  Index [PK_COH_FULL_filtered_ID_TO_STREETBLOCKID]    Script Date: 11/16/2015 1:04:14 PM ******/
-ALTER TABLE [dbo].[COH_FULL_filtered_ID_TO_STREETBLOCKID] ADD  CONSTRAINT [PK_COH_FULL_filtered_ID_TO_STREETBLOCKID] PRIMARY KEY NONCLUSTERED 
+ALTER TABLE [dbo].[BIG_FULL_ID_TO_STREETBLOCKID] ADD  CONSTRAINT [PK_BIG_FULL_ID_TO_STREETBLOCKID] PRIMARY KEY NONCLUSTERED 
 (
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 GO
-
-
-
-
-
--- STATISTICS FOR EVERY STREETBLOCK
-
-USE weiboDEV
-GO
-DROP TABLE
-	COHERENCE_STREETBLOCKS;
-Select 
-	 SB.OBJECTID AS STREETBLOCKID
-	,res.AvgCoh_20090328_20090408_1
-	,res.AvgCoh_20090328_20090419_2
-	,res.AvgCoh_20090328_20090511_3
-	,res.AvgCoh_20090328_20090522_4
-	,res.AvgCoh_20090328_20090602_5
-	,res.AvgCoh_20090328_20090624_6
-	,res.AvgCoh_20090408_20090419_7
-	,res.AvgCoh_20090408_20090511_8
-	,res.AvgCoh_20090408_20090522_9
-	,res.AvgCoh_20090408_20090602_10
-	,res.AvgCoh_20090419_20090511_11
-	,res.AvgCoh_20090419_20090522_12
-	,res.AvgCoh_20090419_20090602_13
-	,res.AvgCoh_20090419_20090624_14
-	,res.AvgCoh_20090511_20090522_15
-	,res.AvgCoh_20090511_20090602_16
-	,res.AvgCoh_20090511_20090624_17
-	,res.AvgCoh_20090522_20090602_18
-	,res.AvgCoh_20090522_20090624_19
-	,res.AvgCoh_20090624_20090829_20
-	,res.AvgCoh_20090624_20090920_21
-	,res.AvgCoh_20090829_20091012_22
-	,res.AvgCoh_20090829_20091023_23
-	,res.AvgCoh_20090920_20091012_24
-	,res.AvgCoh_20090920_20091023_25
-	,res.AvgCoh_20090920_20091114_26
-	,res.AvgCoh_20090920_20091206_27
-	,res.AvgCoh_20090920_20091217_28
-	,res.AvgCoh_20091012_20091023_29
-	,res.AvgCoh_20091012_20091114_30
-	,res.AvgCoh_20091012_20100108_31
-	,res.AvgCoh_20091023_20091114_32
-	,res.AvgCoh_20091023_20100108_33
-	,res.AvgCoh_20091023_20100119_34
-	,res.AvgCoh_20091114_20091206_35
-	,res.AvgCoh_20091114_20091217_36
-	,res.AvgCoh_20091114_20100108_37
-	,res.AvgCoh_20091114_20100119_38
-	,res.AvgCoh_20091114_20100130_39
-	,res.AvgCoh_20091206_20091217_40
-	,res.AvgCoh_20091206_20100108_41
-	,res.AvgCoh_20091206_20100119_42
-	,res.AvgCoh_20091217_20100108_43
-	,res.AvgCoh_20091217_20100119_44
-	,res.AvgCoh_20091228_20091206_45
-	,res.AvgCoh_20091228_20091217_46
-	,res.AvgCoh_20100108_20100119_47
-	,res.AvgCoh_20100108_20100130_48
-	,res.AvgCoh_20100119_20100130_49
-	,res.AvgCoh_20110916_20111008_50
-	,res.AvgCoh_20110916_20111213_51
-	,res.AvgCoh_20111008_20111213_52
-	,res.AvgCoh_20111008_20120104_53
-	,res.AvgCoh_20111121_20120104_54
-	,res.AvgCoh_20111121_20120206_55
-	,res.AvgCoh_20111213_20120310_56
-	,res.AvgCoh_20120104_20120206_57
-	,res.AvgCoh_20120104_20120310_58
-	,res.AvgCoh_20120104_20120401_59
-	,res.AvgCoh_20120206_20120310_60
-	,res.AvgCoh_20120206_20120401_61
-	,res.AvgCoh_20120310_20120401_62
-	,res.AvgCoh_20120310_20120515_63
-	,res.AvgCoh_20120401_20120515_64
-	,res.AvgCoh_20120401_20120628_65
-	,res.AvgCoh_20120515_20120628_66
-	,res.AvgCoh_20120515_20120811_67
-	,res.AvgCoh_20120628_20120811_68
-	,res.AvgCoh_20120628_20120902_69
-	,res.AvgCoh_20120720_20121005_70
-	,res.AvgCoh_20120811_20120902_71
-	,res.PointCount/SB.AREA AS PointDENSITY
-	,SB.[Shape]
-INTO
-	COHERENCE_STREETBLOCKS
-FROM 
-	[weiboDEV].[dbo].ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA SB
-LEFT OUTER JOIN 
-	(	SELECT 
-			 [weiboDEV].[dbo].[COH_FULL_filtered_ID_TO_STREETBLOCKID].[STREETBLOCKID]
-			,COUNT([weiboDEV].[dbo].[COH_FULL_filtered].ID) AS PointCount
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img1]) AS AvgCoh_20090328_20090408_1
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img2]) AS AvgCoh_20090328_20090419_2
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img3]) AS AvgCoh_20090328_20090511_3
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img4]) AS AvgCoh_20090328_20090522_4
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img5]) AS AvgCoh_20090328_20090602_5
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img6]) AS AvgCoh_20090328_20090624_6
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img7]) AS AvgCoh_20090408_20090419_7
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img8]) AS AvgCoh_20090408_20090511_8
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img9]) AS AvgCoh_20090408_20090522_9
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img10]) AS AvgCoh_20090408_20090602_10
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img11]) AS AvgCoh_20090419_20090511_11
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img12]) AS AvgCoh_20090419_20090522_12
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img13]) AS AvgCoh_20090419_20090602_13
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img14]) AS AvgCoh_20090419_20090624_14
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img15]) AS AvgCoh_20090511_20090522_15
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img16]) AS AvgCoh_20090511_20090602_16
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img17]) AS AvgCoh_20090511_20090624_17
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img18]) AS AvgCoh_20090522_20090602_18
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img19]) AS AvgCoh_20090522_20090624_19
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img20]) AS AvgCoh_20090624_20090829_20
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img21]) AS AvgCoh_20090624_20090920_21
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img22]) AS AvgCoh_20090829_20091012_22
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img23]) AS AvgCoh_20090829_20091023_23
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img24]) AS AvgCoh_20090920_20091012_24
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img25]) AS AvgCoh_20090920_20091023_25
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img26]) AS AvgCoh_20090920_20091114_26
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img27]) AS AvgCoh_20090920_20091206_27
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img28]) AS AvgCoh_20090920_20091217_28
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img29]) AS AvgCoh_20091012_20091023_29
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img30]) AS AvgCoh_20091012_20091114_30
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img31]) AS AvgCoh_20091012_20100108_31
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img32]) AS AvgCoh_20091023_20091114_32
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img33]) AS AvgCoh_20091023_20100108_33
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img34]) AS AvgCoh_20091023_20100119_34
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img35]) AS AvgCoh_20091114_20091206_35
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img36]) AS AvgCoh_20091114_20091217_36
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img37]) AS AvgCoh_20091114_20100108_37
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img38]) AS AvgCoh_20091114_20100119_38
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img39]) AS AvgCoh_20091114_20100130_39
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img40]) AS AvgCoh_20091206_20091217_40
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img41]) AS AvgCoh_20091206_20100108_41
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img42]) AS AvgCoh_20091206_20100119_42
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img43]) AS AvgCoh_20091217_20100108_43
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img44]) AS AvgCoh_20091217_20100119_44
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img45]) AS AvgCoh_20091228_20091206_45
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img46]) AS AvgCoh_20091228_20091217_46
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img47]) AS AvgCoh_20100108_20100119_47
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img48]) AS AvgCoh_20100108_20100130_48
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img49]) AS AvgCoh_20100119_20100130_49
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img50]) AS AvgCoh_20110916_20111008_50
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img51]) AS AvgCoh_20110916_20111213_51
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img52]) AS AvgCoh_20111008_20111213_52
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img53]) AS AvgCoh_20111008_20120104_53
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img54]) AS AvgCoh_20111121_20120104_54
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img55]) AS AvgCoh_20111121_20120206_55
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img56]) AS AvgCoh_20111213_20120310_56
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img57]) AS AvgCoh_20120104_20120206_57
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img58]) AS AvgCoh_20120104_20120310_58
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img59]) AS AvgCoh_20120104_20120401_59
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img60]) AS AvgCoh_20120206_20120310_60
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img61]) AS AvgCoh_20120206_20120401_61
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img62]) AS AvgCoh_20120310_20120401_62
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img63]) AS AvgCoh_20120310_20120515_63
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img64]) AS AvgCoh_20120401_20120515_64
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img65]) AS AvgCoh_20120401_20120628_65
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img66]) AS AvgCoh_20120515_20120628_66
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img67]) AS AvgCoh_20120515_20120811_67
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img68]) AS AvgCoh_20120628_20120811_68
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img69]) AS AvgCoh_20120628_20120902_69
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img70]) AS AvgCoh_20120720_20121005_70
-			,AVG([weiboDEV].[dbo].[COH_FULL_filtered].[img71]) AS AvgCoh_20120811_20120902_71
-		FROM 
-			[weiboDEV].[dbo].[COH_FULL_filtered_ID_TO_STREETBLOCKID]
-		JOIN 
-			[weiboDEV].[dbo].[COH_FULL_filtered]
-		ON
-			[weiboDEV].[dbo].[COH_FULL_filtered_ID_TO_STREETBLOCKID].[ID] = [weiboDEV].[dbo].[COH_FULL_filtered].[ID]
-		GROUP BY 
-			[weiboDEV].[dbo].[COH_FULL_filtered_ID_TO_STREETBLOCKID].STREETBLOCKID
-	) res ON (SB.OBJECTID=res.STREETBLOCKID)
-
-
-ALTER TABLE [dbo].[COHERENCE_STREETBLOCKS] ADD  CONSTRAINT [PK_COH_FULL_filtered_STREETBLOCKID] PRIMARY KEY CLUSTERED 
-(
-	[STREETBLOCKID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
-
-SET ARITHABORT ON
-SET CONCAT_NULL_YIELDS_NULL ON
-SET QUOTED_IDENTIFIER ON
-SET ANSI_NULLS ON
-SET ANSI_PADDING ON
-SET ANSI_WARNINGS ON
-SET NUMERIC_ROUNDABORT OFF
-GO
-CREATE SPATIAL INDEX [SpatialIndex-20151116-153425] ON [dbo].[COHERENCE_STREETBLOCKS]
-(
-	[Shape]
-)USING  GEOGRAPHY_AUTO_GRID 
-WITH (
-CELLS_PER_OBJECT = 16, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
-
-
