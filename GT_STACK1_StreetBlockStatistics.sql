@@ -189,3 +189,18 @@ CREATE SPATIAL INDEX [SI_STACK_1_EQ_STREETBLOCKS] ON [dbo].[STACK_1_EQ_STREETBLO
 )USING  GEOGRAPHY_AUTO_GRID 
 WITH (
 CELLS_PER_OBJECT = 16, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+
+
+
+-------------------------------------------------------------------
+--     	Select all then save as CSV for matlab
+-------------------------------------------------------------------
+USE
+	weiboDEV
+GO
+Select 
+	* 
+FROM
+	[dbo].[STACK_1_EQ_STREETBLOCKS]
+WHERE
+	PointDensity IS NOT NULL
