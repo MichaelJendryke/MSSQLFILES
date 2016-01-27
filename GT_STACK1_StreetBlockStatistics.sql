@@ -204,3 +204,91 @@ FROM
 	[dbo].[STACK_1_EQ_STREETBLOCKS]
 WHERE
 	PointDensity IS NOT NULL
+
+
+-------------------------------------------------------------------
+--     	Select STACK 1 into normalized ROW by ROW format (PIVOT)
+-------------------------------------------------------------------
+-- adoped from http://bradsruminations.blogspot.com/2010/02/spotlight-on-unpivot-part-1.html
+--
+use weiboDEV
+GO
+select STREETBLOCKID,imgdate,Coherence
+into STACK_1_EQ_STREETBLOCKS_rowformat
+from [dbo].[STACK_1_EQ_STREETBLOCKS]
+cross apply (	select 'AvgCoh_20090328_20090408_1'  as imagedate, AvgCoh_20090328_20090408_1  union all
+				select 'AvgCoh_20090328_20090419_2'  as imagedate, AvgCoh_20090328_20090419_2  union all
+				select 'AvgCoh_20090328_20090511_3'  as imagedate, AvgCoh_20090328_20090511_3  union all
+				select 'AvgCoh_20090328_20090522_4'  as imagedate, AvgCoh_20090328_20090522_4  union all
+				select 'AvgCoh_20090328_20090602_5'  as imagedate, AvgCoh_20090328_20090602_5  union all
+				select 'AvgCoh_20090328_20090624_6'  as imagedate, AvgCoh_20090328_20090624_6  union all
+				select 'AvgCoh_20090408_20090419_7'  as imagedate, AvgCoh_20090408_20090419_7  union all
+				select 'AvgCoh_20090408_20090511_8'  as imagedate, AvgCoh_20090408_20090511_8  union all
+				select 'AvgCoh_20090408_20090522_9'  as imagedate, AvgCoh_20090408_20090522_9  union all
+				select 'AvgCoh_20090408_20090602_10' as imagedate, AvgCoh_20090408_20090602_10 union all
+				select 'AvgCoh_20090419_20090511_11' as imagedate, AvgCoh_20090419_20090511_11 union all
+				select 'AvgCoh_20090419_20090522_12' as imagedate, AvgCoh_20090419_20090522_12 union all
+				select 'AvgCoh_20090419_20090602_13' as imagedate, AvgCoh_20090419_20090602_13 union all
+				select 'AvgCoh_20090419_20090624_14' as imagedate, AvgCoh_20090419_20090624_14 union all
+				select 'AvgCoh_20090511_20090522_15' as imagedate, AvgCoh_20090511_20090522_15 union all
+				select 'AvgCoh_20090511_20090602_16' as imagedate, AvgCoh_20090511_20090602_16 union all
+				select 'AvgCoh_20090511_20090624_17' as imagedate, AvgCoh_20090511_20090624_17 union all
+				select 'AvgCoh_20090522_20090602_18' as imagedate, AvgCoh_20090522_20090602_18 union all
+				select 'AvgCoh_20090522_20090624_19' as imagedate, AvgCoh_20090522_20090624_19 union all
+				select 'AvgCoh_20090624_20090829_20' as imagedate, AvgCoh_20090624_20090829_20 union all
+				select 'AvgCoh_20090624_20090920_21' as imagedate, AvgCoh_20090624_20090920_21 union all
+				select 'AvgCoh_20090829_20091012_22' as imagedate, AvgCoh_20090829_20091012_22 union all
+				select 'AvgCoh_20090829_20091023_23' as imagedate, AvgCoh_20090829_20091023_23 union all
+				select 'AvgCoh_20090920_20091012_24' as imagedate, AvgCoh_20090920_20091012_24 union all
+				select 'AvgCoh_20090920_20091023_25' as imagedate, AvgCoh_20090920_20091023_25 union all
+				select 'AvgCoh_20090920_20091114_26' as imagedate, AvgCoh_20090920_20091114_26 union all
+				select 'AvgCoh_20090920_20091206_27' as imagedate, AvgCoh_20090920_20091206_27 union all
+				select 'AvgCoh_20090920_20091217_28' as imagedate, AvgCoh_20090920_20091217_28 union all
+				select 'AvgCoh_20091012_20091023_29' as imagedate, AvgCoh_20091012_20091023_29 union all
+				select 'AvgCoh_20091012_20091114_30' as imagedate, AvgCoh_20091012_20091114_30 union all
+				select 'AvgCoh_20091012_20100108_31' as imagedate, AvgCoh_20091012_20100108_31 union all
+				select 'AvgCoh_20091023_20091114_32' as imagedate, AvgCoh_20091023_20091114_32 union all
+				select 'AvgCoh_20091023_20100108_33' as imagedate, AvgCoh_20091023_20100108_33 union all
+				select 'AvgCoh_20091023_20100119_34' as imagedate, AvgCoh_20091023_20100119_34 union all
+				select 'AvgCoh_20091114_20091206_35' as imagedate, AvgCoh_20091114_20091206_35 union all
+				select 'AvgCoh_20091114_20091217_36' as imagedate, AvgCoh_20091114_20091217_36 union all
+				select 'AvgCoh_20091114_20100108_37' as imagedate, AvgCoh_20091114_20100108_37 union all
+				select 'AvgCoh_20091114_20100119_38' as imagedate, AvgCoh_20091114_20100119_38 union all
+				select 'AvgCoh_20091114_20100130_39' as imagedate, AvgCoh_20091114_20100130_39 union all
+				select 'AvgCoh_20091206_20091217_40' as imagedate, AvgCoh_20091206_20091217_40 union all
+				select 'AvgCoh_20091206_20100108_41' as imagedate, AvgCoh_20091206_20100108_41 union all
+				select 'AvgCoh_20091206_20100119_42' as imagedate, AvgCoh_20091206_20100119_42 union all
+				select 'AvgCoh_20091217_20100108_43' as imagedate, AvgCoh_20091217_20100108_43 union all
+				select 'AvgCoh_20091217_20100119_44' as imagedate, AvgCoh_20091217_20100119_44 union all
+				select 'AvgCoh_20091228_20091206_45' as imagedate, AvgCoh_20091228_20091206_45 union all
+				select 'AvgCoh_20091228_20091217_46' as imagedate, AvgCoh_20091228_20091217_46 union all
+				select 'AvgCoh_20100108_20100119_47' as imagedate, AvgCoh_20100108_20100119_47 union all
+				select 'AvgCoh_20100108_20100130_48' as imagedate, AvgCoh_20100108_20100130_48 union all
+				select 'AvgCoh_20100119_20100130_49' as imagedate, AvgCoh_20100119_20100130_49 union all
+				select 'AvgCoh_20110916_20111008_50' as imagedate, AvgCoh_20110916_20111008_50 union all
+				select 'AvgCoh_20110916_20111213_51' as imagedate, AvgCoh_20110916_20111213_51 union all
+				select 'AvgCoh_20111008_20111213_52' as imagedate, AvgCoh_20111008_20111213_52 union all
+				select 'AvgCoh_20111008_20120104_53' as imagedate, AvgCoh_20111008_20120104_53 union all
+				select 'AvgCoh_20111121_20120104_54' as imagedate, AvgCoh_20111121_20120104_54 union all
+				select 'AvgCoh_20111121_20120206_55' as imagedate, AvgCoh_20111121_20120206_55 union all
+				select 'AvgCoh_20111213_20120310_56' as imagedate, AvgCoh_20111213_20120310_56 union all
+				select 'AvgCoh_20120104_20120206_57' as imagedate, AvgCoh_20120104_20120206_57 union all
+				select 'AvgCoh_20120104_20120310_58' as imagedate, AvgCoh_20120104_20120310_58 union all
+				select 'AvgCoh_20120104_20120401_59' as imagedate, AvgCoh_20120104_20120401_59 union all
+				select 'AvgCoh_20120206_20120310_60' as imagedate, AvgCoh_20120206_20120310_60 union all
+				select 'AvgCoh_20120206_20120401_61' as imagedate, AvgCoh_20120206_20120401_61 union all
+				select 'AvgCoh_20120310_20120401_62' as imagedate, AvgCoh_20120310_20120401_62 union all
+				select 'AvgCoh_20120310_20120515_63' as imagedate, AvgCoh_20120310_20120515_63 union all
+				select 'AvgCoh_20120401_20120515_64' as imagedate, AvgCoh_20120401_20120515_64 union all
+				select 'AvgCoh_20120401_20120628_65' as imagedate, AvgCoh_20120401_20120628_65 union all
+				select 'AvgCoh_20120515_20120628_66' as imagedate, AvgCoh_20120515_20120628_66 union all
+				select 'AvgCoh_20120515_20120811_67' as imagedate, AvgCoh_20120515_20120811_67 union all
+				select 'AvgCoh_20120628_20120811_68' as imagedate, AvgCoh_20120628_20120811_68 union all
+				select 'AvgCoh_20120628_20120902_69' as imagedate, AvgCoh_20120628_20120902_69 union all
+				select 'AvgCoh_20120720_20121005_70' as imagedate, AvgCoh_20120720_20121005_70 union all
+				select 'AvgCoh_20120811_20120902_71' as imagedate, AvgCoh_20120811_20120902_71) X(imgdate,Coherence)
+
+
+
+
+

@@ -74,3 +74,47 @@ CREATE SPATIAL INDEX [SI_STACK_2_EQ_STREETBLOCKS] ON [dbo].[STACK_2_EQ_STREETBLO
 )USING  GEOGRAPHY_AUTO_GRID 
 WITH (
 CELLS_PER_OBJECT = 16, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+
+
+-------------------------------------------------------------------
+--     	Select all then save as CSV for matlab
+-------------------------------------------------------------------
+USE
+	weiboDEV
+GO
+Select 
+	* 
+FROM
+	[dbo].[STACK_2_EQ_STREETBLOCKS]
+WHERE
+	PointDensity IS NOT NULL
+
+
+-------------------------------------------------------------------
+--     	Select STACK 2 into normalized ROW by ROW format (PIVOT)
+-------------------------------------------------------------------
+-- adoped from http://bradsruminations.blogspot.com/2010/02/spotlight-on-unpivot-part-1.html
+--
+use weiboDEV
+GO
+select STREETBLOCKID,imgdate,Coherence
+into STACK_2_EQ_STREETBLOCKS_rowformat
+from [dbo].[STACK_2_EQ_STREETBLOCKS]
+cross apply (	select 'AvgCoh_20130416_20130508_1'  as imagedate, AvgCoh_20130416_20130508_1  union all
+				select 'AvgCoh_20130416_20130621_2'  as imagedate, AvgCoh_20130416_20130621_2  union all
+				select 'AvgCoh_20130508_20130621_3'  as imagedate, AvgCoh_20130508_20130621_3  union all
+				select 'AvgCoh_20130508_20130713_4'  as imagedate, AvgCoh_20130508_20130713_4  union all
+				select 'AvgCoh_20130621_20130917_5'  as imagedate, AvgCoh_20130621_20130917_5  union all
+				select 'AvgCoh_20130713_20130917_6'  as imagedate, AvgCoh_20130713_20130917_6  union all
+				select 'AvgCoh_20130917_20131214_7'  as imagedate, AvgCoh_20130917_20131214_7  union all
+				select 'AvgCoh_20131214_20140312_8'  as imagedate, AvgCoh_20131214_20140312_8  union all
+				select 'AvgCoh_20140312_20140517_9'  as imagedate, AvgCoh_20140312_20140517_9  union all
+				select 'AvgCoh_20140802_20140517_10' as imagedate, AvgCoh_20140802_20140517_10 union all
+				select 'AvgCoh_20140802_20140915_11' as imagedate, AvgCoh_20140802_20140915_11 union all
+				select 'AvgCoh_20140802_20141029_12' as imagedate, AvgCoh_20140802_20141029_12 union all
+				select 'AvgCoh_20141029_20141223_13' as imagedate, AvgCoh_20141029_20141223_13 union all
+				select 'AvgCoh_20150401_20150515_14' as imagedate, AvgCoh_20150401_20150515_14 ) X(imgdate,Coherence)
+
+				
+				
+	
