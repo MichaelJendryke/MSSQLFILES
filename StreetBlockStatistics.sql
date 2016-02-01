@@ -1,28 +1,31 @@
--- How to sort Points of any City into Polygons of OpenStreetMap OSM
--- 1. Link msgID of the Points to the Input_FID of DISSOLVED Thiessen Street blocks
---    a link table will be generated
--- 2. Select Point table and join with Linktable
+-----------------------------------------------------------------------------------
+-- MOST IMPORTANT DOCUMENT WITH FINAL STREET-BLOCK AND URBAN DISTRICT STATISTICS --
+-----------------------------------------------------------------------------------
 
-
-
-------------------------------------------------------------------------------------------------------
--- 0. UPDATE STREET BLOCKS with ADM IDs  -------------------------------------------------------------
-------------------------------------------------------------------------------------------------------
-USE 
-	weiboDEV
+-- PREPARATION
+SELECT
+	[OBJECTID]
+   ,[Shape]
+INTO
+	SHANGHAI_STREET_BLOCKS_ROADS_RIVERS_BORDERS
+FROM
+	[dbo].[ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA]
+-- create primary index on OBJECTID then create spatial index as below
+SET ARITHABORT ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET NUMERIC_ROUNDABORT OFF
 GO
-UPDATE  
-	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID]
-SET
-	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID].[ADM_2] = 262
-FROM 
-	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID] as STREETBLOCK
-JOIN
-	[dbo].[GADM_CHN_ADM3_SINGLE] as polyADM
-ON  
-	polyADM.Shape.STIntersects(STREETBLOCK.Shape) =1
-WHERE
-	[ID_2] = 262
+CREATE SPATIAL INDEX [SpatialIndex-Shape] ON [dbo].[SHANGHAI_STREET_BLOCKS_ROADS_RIVERS_BORDERS]
+(
+	[Shape]
+)USING  GEOGRAPHY_GRID 
+WITH (GRIDS =(LEVEL_1 = HIGH,LEVEL_2 = HIGH,LEVEL_3 = HIGH,LEVEL_4 = HIGH), 
+CELLS_PER_OBJECT = 16, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+GO
 
 ------------------------------------------------------------------------------------------------------
 -- 1. Create Table that links msgID and objectID from STREET_BLOCK_DISSOLVED_THIESSEN_ID polygons  ---
@@ -34,36 +37,31 @@ USE
 GO
 DROP TABLE 
 	-- the link between street blocks and messages!!!
-	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID
 Select 
-	[OBJECTID],
-	[STREETBLOCKID],-- this is equal to the target_id from the spatial join tool in ArcMAP
-	[msgID],
-	[userID]
+	polygon.[OBJECTID]
+   ,point.[msgID]
+   ,point.[userID]
 INTO
     -- the link between street blocks and messages!!! 
-	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID
 FROM 
-	-- the original points
-	[dbo].[NBT4_exact_copy_GEO] as point 
-WITH(nolock,INDEX([SpatialIndex-20150619-114940]))
+	-- the original points (use already subsetted Points)
+	[dbo].[Points_Shanghai_262] as point WITH(nolock,INDEX([location_SpatialIndex-20150624-142054]))
 JOIN 
 	-- the street block layer
-	[dbo].[ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA] as polygon
+	[dbo].[SHANGHAI_STREET_BLOCKS_ROADS_RIVERS_BORDERS] as polygon
 ON 
 	point.location.STIntersects(polygon.Shape) =1
-WHERE
-	polygon.GADM_ID_2 = 262
 
-USE [weiboDEV]
 
+USE 
+	[weiboDEV]
 GO
-
 CREATE UNIQUE CLUSTERED INDEX [ClusteredIndex-20150905-141653] ON [dbo].[SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID]
 (
 	[msgID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
-
 GO
 
 
@@ -175,3 +173,21 @@ FROM            dbo.Points_Shanghai_262 INNER JOIN
 
 ----STEP 1
 -- Create Table that links msgID and objectID from STREET_BLOCK_DISSOLVED_THIESSEN_ID polygons
+------------------------------------------------------------------------------------------------------
+-- 0. UPDATE STREET BLOCKS with ADM IDs  -------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+USE 
+	weiboDEV
+GO
+UPDATE  
+	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID]
+SET
+	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID].[ADM_2] = 262
+FROM 
+	[dbo].[CHINA_STREET_BLOCK_DISSOLVED_BY_THIESSEN_ID] as STREETBLOCK
+JOIN
+	[dbo].[GADM_CHN_ADM3_SINGLE] as polyADM
+ON  
+	polyADM.Shape.STIntersects(STREETBLOCK.Shape) =1
+WHERE
+	[ID_2] = 262
