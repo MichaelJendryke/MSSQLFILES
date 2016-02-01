@@ -28,9 +28,9 @@ CELLS_PER_OBJECT = 16, PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TE
 GO
 
 ------------------------------------------------------------------------------------------------------
--- 1. Create Table that links msgID and objectID from STREET_BLOCK_DISSOLVED_THIESSEN_ID polygons  ---
+-- 1. Create link msgID userID and OBJECTID from SHANGHAI_STREET_BLOCKS_ROADS_RIVERS_BORDERS       ---
 ------------------------------------------------------------------------------------------------------
--- around 2h runtime for Shanghai with over 30000 polygons
+-- around 17 minutes runtime for Shanghai with over 30000 polygons
 --
 USE 
 	weiboDEV
@@ -53,12 +53,12 @@ JOIN
 	[dbo].[SHANGHAI_STREET_BLOCKS_ROADS_RIVERS_BORDERS] as polygon
 ON 
 	point.location.STIntersects(polygon.Shape) =1
-
+-- (11793991 row(s) affected)
 
 USE 
 	[weiboDEV]
 GO
-CREATE UNIQUE CLUSTERED INDEX [ClusteredIndex-20150905-141653] ON [dbo].[SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID]
+CREATE UNIQUE CLUSTERED INDEX [ClusteredIndex-msgID] ON [dbo].[SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID]
 (
 	[msgID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -66,40 +66,43 @@ GO
 
 
 ------------------------------------------------------------------------------------------------------
--- 2. Count RESIDETNS Message Count and Distict User Count from Shanghai  ---
+-- 2. DATA AGGREGATION per STREET BLOCK
 ------------------------------------------------------------------------------------------------------
+-- a) Total message count and number of unique users
 USE
 	weiboDEV
 GO
-drop table temp1
+DROP TABLE
+	STEET_BLOCK_TotalMessageCount_and_DistinctUserCount
 SELECT
-	[STREETBLOCKID], -- unique id of each Street Block polygon
-	COUNT (LINK1.[msgID]) AS MessageCount,
-	Count(Distinct LINK1.[userID]) AS UserCount
+	LINK1.[OBJECTID] -- unique id of each Street Block polygon
+   ,COUNT (LINK1.[msgID]) AS TotalMessageCount
+   ,COUNT(Distinct LINK1.[userID]) AS DistinctUserCount
 INTO
-	temp1
+	STEET_BLOCK_TotalMessageCount_and_DistinctUserCount
 FROM
-	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCKID as LINK1
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID as LINK1
 GROUP BY
-	[STREETBLOCKID]
+	LINK1.OBJECTID
 
-
+DROP TABLE
+	STEET_BLOCK_ResidentsTotalMessageCount_and_ResidentsDistinctUserCount
 SELECT
-	[Input_FID],
-	COUNT (LINK1.[msgID]) AS ResidentsMessageCount,
-	Count(Distinct LINK1.[userID]) AS ResidentsUserCount
+	LINK1.[OBJECTID]
+   ,COUNT (LINK1.[msgID]) AS ResidentsMessageCount
+   ,COUNT(Distinct LINK1.[userID]) AS ResidentsUserCount
 INTO
-	temp2
+	STEET_BLOCK_ResidentsTotalMessageCount_and_ResidentsDistinctUserCount
 FROM
-	LINK_msgID_userID_to_STREET_BLOCKS_Input_FID_Shanghai_262 as LINK1
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID as LINK1
 JOIN
-	[dbo].[NBT4_exact_copy]
+	[dbo].[NBT4_exact_copy] as points -- only this one has userprovince information
 ON
-	LINK1.msgID = [dbo].[NBT4_exact_copy].[msgID]
+	LINK1.msgID = points.msgID
 WHERE
-	[dbo].[NBT4_exact_copy].userprovince = 31
+	points.userprovince = 31
 GROUP BY
-	[Input_FID]
+	LINK1.OBJECTID
 
 
 -- master
