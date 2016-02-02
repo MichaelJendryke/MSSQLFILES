@@ -77,7 +77,7 @@ DROP TABLE
 SELECT
 	LINK1.[OBJECTID] -- unique id of each Street Block polygon
    ,COUNT (LINK1.[msgID]) AS TotalMessageCount
-   ,COUNT(Distinct LINK1.[userID]) AS DistinctUserCount
+   ,COUNT(DISTINCT LINK1.[userID]) AS DistinctUserCount
 INTO
 	STEET_BLOCK_TotalMessageCount_and_DistinctUserCount
 FROM
@@ -85,12 +85,13 @@ FROM
 GROUP BY
 	LINK1.OBJECTID
 
+-- b) Total message count and number of unique users that said that they are from province 31 (Shanghai)
 DROP TABLE
 	STEET_BLOCK_ResidentsTotalMessageCount_and_ResidentsDistinctUserCount
 SELECT
 	LINK1.[OBJECTID]
    ,COUNT (LINK1.[msgID]) AS ResidentsMessageCount
-   ,COUNT(Distinct LINK1.[userID]) AS ResidentsUserCount
+   ,COUNT(DISTINCT LINK1.[userID]) AS ResidentsUserCount
 INTO
 	STEET_BLOCK_ResidentsTotalMessageCount_and_ResidentsDistinctUserCount
 FROM
@@ -103,6 +104,98 @@ WHERE
 	points.userprovince = 31
 GROUP BY
 	LINK1.OBJECTID
+
+-- c) MessageCount and distinct user count per month per street-block
+DROP TABLE
+	STEET_BLOCK_TotalMessageCount_and_DistinctUserCount_PER_MONTH
+SELECT
+	LINK1.OBJECTID
+   ,YEAR(POINTS.[createdAT]) AS YEAR
+   ,MONTH(POINTS.[createdAT]) AS MONTH
+   ,COUNT(LINK1.[msgID]) AS MessageCount
+   ,COUNT(DISTINCT LINK1.userID) AS DistinctUserCount
+INTO
+	STEET_BLOCK_TotalMessageCount_and_DistinctUserCount_PER_MONTH
+FROM
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID AS LINK1
+JOIN
+	[dbo].[Points_Shanghai_262] AS POINTS
+ON
+	LINK1.msgID = POINTS.msgID
+GROUP BY
+	LINK1.OBJECTID
+   ,YEAR([createdAT])
+   ,MONTH([createdAT])
+ORDER BY
+	LINK1.OBJECTID ASC
+   ,YEAR([createdAT]) ASC
+   ,MONTH([createdAT]) ASC
+
+-- d) RESIDENTS MessageCount and DistinctUserCount per month per street-block
+DROP TABLE
+	STEET_BLOCK_ResidentsTotalMessageCount_and_ResidentsDistinctUserCount_PER_MONTH
+SELECT
+	LINK1.OBJECTID
+   ,YEAR(POINTS.[createdAT]) AS YEAR
+   ,MONTH(POINTS.[createdAT]) AS MONTH
+   ,COUNT(LINK1.[msgID]) AS ResidentsMessageCount
+   ,COUNT(DISTINCT LINK1.userID) AS ResidentsDistinctUserCount
+INTO
+	STEET_BLOCK_ResidentsTotalMessageCount_and_ResidentsDistinctUserCount_PER_MONTH
+FROM
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID AS LINK1
+JOIN
+	[dbo].[Points_Shanghai_262] AS POINTS
+ON
+	LINK1.msgID = POINTS.msgID
+JOIN
+	[dbo].[NBT4_exact_copy] as AllAttributes -- only this one has userprovince information
+ON
+	LINK1.msgID = AllAttributes.msgID
+WHERE
+	AllAttributes.userprovince = 31
+GROUP BY
+	LINK1.OBJECTID
+   ,YEAR([POINTS].[createdAT])
+   ,MONTH([POINTS].[createdAT])
+ORDER BY
+	LINK1.OBJECTID ASC
+   ,YEAR([POINTS].[createdAT]) ASC
+   ,MONTH([POINTS].[createdAT]) ASC
+
+-- e) TOURISTS MessageCount and DistinctUserCount per month per street-block
+DROP TABLE
+	STEET_BLOCK_TouristsTotalMessageCount_and_TouristsDistinctUserCount_PER_MONTH
+SELECT
+	LINK1.OBJECTID
+   ,YEAR(POINTS.[createdAT]) AS YEAR
+   ,MONTH(POINTS.[createdAT]) AS MONTH
+   ,COUNT(LINK1.[msgID]) AS TouristsMessageCount
+   ,COUNT(DISTINCT LINK1.userID) AS TouristsDistinctUserCount
+INTO
+	STEET_BLOCK_TouristsTotalMessageCount_and_TouristsDistinctUserCount_PER_MONTH
+FROM
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID AS LINK1
+JOIN
+	[dbo].[Points_Shanghai_262] AS POINTS
+ON
+	LINK1.msgID = POINTS.msgID
+JOIN
+	[dbo].[NBT4_exact_copy] as AllAttributes -- only this one has userprovince information
+ON
+	LINK1.msgID = AllAttributes.msgID
+WHERE
+	AllAttributes.userprovince <> 31
+GROUP BY
+	LINK1.OBJECTID
+   ,YEAR([POINTS].[createdAT])
+   ,MONTH([POINTS].[createdAT])
+ORDER BY
+	LINK1.OBJECTID ASC
+   ,YEAR([POINTS].[createdAT]) ASC
+   ,MONTH([POINTS].[createdAT]) ASC
+
+
 
 
 -- master
