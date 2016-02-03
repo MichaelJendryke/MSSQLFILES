@@ -789,7 +789,7 @@ DROP TABLE
 SELECT 
 	STREETBLOCKID
    ,imgdate
-   ,Coherence
+   ,Coherence AS VALUE
 INTO
 	STACK_1_EQ_STREETBLOCKS_rowformat
 from
@@ -1150,7 +1150,24 @@ cross apply (	select 'AvgCoh_20090328_20090408_1'  as imagedate, AvgCoh_20090328
 				select 'StDevPCoh_20120720_20121005_70' as imagedate, StDevPCoh_20120720_20121005_70 union all
 				select 'StDevPCoh_20120811_20120902_71' as imagedate, StDevPCoh_20120811_20120902_71 ) X(imgdate,Coherence)
 
+ALTER TABLE 
+	STACK_1_EQ_STREETBLOCKS_rowformat
+ADD 
+	what nvarchar(10);
 
+UPDATE STACK_1_EQ_STREETBLOCKS_rowformat
+SET 
+	what = (
+			CASE
+				WHEN (LEFT(imgdate, 3) = 'Avg') THEN 'AVG'
+				WHEN (LEFT(imgdate, 3) = 'Max') THEN 'MAX'
+				WHEN (LEFT(imgdate, 3) = 'Min') THEN 'MIN'
+				WHEN (LEFT(imgdate, 6) = 'StDevP') THEN 'STDEVP'
+				WHEN (LEFT(imgdate, 5) = 'StDev') THEN 'STDEV'
+				ELSE
+					''
+				END
+			)
 
 
 

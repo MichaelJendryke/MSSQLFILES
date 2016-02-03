@@ -217,7 +217,7 @@ DROP TABLE
 SELECT
 	STREETBLOCKID
    ,imgdate
-   ,Coherence as VALUE
+   ,Coherence AS VALUE
 INTO 
 	STACK_2_EQ_STREETBLOCKS_rowformat
 FROM
@@ -296,22 +296,22 @@ cross apply (	select 'AvgCoh_20130416_20130508_1'  as imagedate, AvgCoh_20130416
 ALTER TABLE 
 	STACK_2_EQ_STREETBLOCKS_rowformat
 ADD 
-	what smallint;
+	what nvarchar(10);
 
 UPDATE STACK_2_EQ_STREETBLOCKS_rowformat
 SET 
 	what = (
 			CASE
-				WHEN (LEFT(imgdate, 3) = 'Avg') THEN 1
-				WHEN (LEFT(imgdate, 3) = 'Max') THEN 2
-				WHEN (LEFT(imgdate, 3) = 'Min') THEN 3
-				WHEN (LEFT(imgdate, 5) = 'StDev') THEN 4
-				WHEN (SUBSTRING(imgdate, 1,6) = 'StDevP') THEN SUBSTRING(imgdate, 1,6)
+				WHEN (LEFT(imgdate, 3) = 'Avg') THEN 'AVG'
+				WHEN (LEFT(imgdate, 3) = 'Max') THEN 'MAX'
+				WHEN (LEFT(imgdate, 3) = 'Min') THEN 'MIN'
+				WHEN (LEFT(imgdate, 6) = 'StDevP') THEN 'STDEVP'
+				WHEN (LEFT(imgdate, 5) = 'StDev') THEN 'STDEV'
 				ELSE
-					0
+					''
 				END
 			)
 
-	Select * from [dbo].[STACK_2_EQ_STREETBLOCKS_rowformat] 			
+Select * from [dbo].[STACK_2_EQ_STREETBLOCKS_rowformat] 			
 				
 	

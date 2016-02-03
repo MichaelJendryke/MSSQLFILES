@@ -1,0 +1,47 @@
+DROP TABLE
+	temp1
+SELECT 
+	*
+INTO temp1
+FROM 
+(
+	SELECT 
+		D.OBJECTID
+		,concat(D.[YEAR],FORMAT(D.[MONTH],'0#')) AS YYYYMM
+		,D.MessageCount
+		--,D.DistinctUserCount
+	FROM
+		STEET_BLOCK_TotalMessageCount_and_DistinctUserCount_PER_MONTH as D
+) src
+pivot
+(
+  sum(MessageCount)
+  for YYYYMM in ([201206],[201207],[201208],[201209],[201210],[201211],[201212],[201301],[201302],[201303],[201304],[201305],[201306],[201307],[201308],[201309],[201310],[201311],[201312],[201401],[201402],[201403],[201404],[201405],[201406],[201407],[201408],[201409],[201410],[201411],[201412],[201501],[201502],[201503],[201504],[201505],[201506])
+) piv;
+
+DROP TABLE
+	temp2
+SELECT 
+	*
+INTO temp2
+FROM 
+(
+	SELECT 
+		D.OBJECTID
+		,concat(D.[YEAR],FORMAT(D.[MONTH],'0#')) AS YYYYMM
+		--,D.MessageCount
+		,D.DistinctUserCount
+	FROM
+		STEET_BLOCK_TotalMessageCount_and_DistinctUserCount_PER_MONTH as D
+) src
+pivot
+(
+  sum(DistinctUserCount)
+  for YYYYMM in ([201206],[201207],[201208],[201209],[201210],[201211],[201212],[201301],[201302],[201303],[201304],[201305],[201306],[201307],[201308],[201309],[201310],[201311],[201312],[201401],[201402],[201403],[201404],[201405],[201406],[201407],[201408],[201409],[201410],[201411],[201412],[201501],[201502],[201503],[201504],[201505],[201506])
+) piv;
+
+SELECT * from
+temp1 
+JOIN
+temp2
+ON temp1.OBJECTID = temp2.OBJECTID
