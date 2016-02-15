@@ -25,7 +25,8 @@ ORDER BY
 	LINK1.OBJECTID ASC
    ,DATEPART(HOUR, POINTS.[createdAT]) ASC
 
-SELECT * FROM STEET_BLOCK_ResidentsTotalMessageCount_PER_HOUR_rowformat
+
+				SELECT * FROM STEET_BLOCK_ResidentsTotalMessageCount_PER_HOUR_rowformat
 
 
 DROP TABLE
@@ -72,7 +73,10 @@ pivot
   sum(ResidentsTotalMessageCount)
   for HOUR in ([00],[01],[02],[03],[04],[05],[06],[07],[08],[09],[10],[11],[12],[13],[14],[15],[16],[17],[18],[19],[20],[21],[22],[23])
 ) piv;
-SELECT * FROM temp1
+
+
+				SELECT * FROM temp1
+
 
 
 DROP TABLE
@@ -102,7 +106,8 @@ ORDER BY
 	LINK1.OBJECTID ASC
    ,DATEPART(HOUR, POINTS.[createdAT]) ASC
 
-SELECT * FROM STEET_BLOCK_TouristTotalMessageCount_PER_HOUR_rowformat
+
+				SELECT * FROM STEET_BLOCK_TouristTotalMessageCount_PER_HOUR_rowformat
 
 
 DROP TABLE
@@ -148,10 +153,88 @@ pivot
   sum(TouristTotalMessageCount)
   for HOUR in ([00],[01],[02],[03],[04],[05],[06],[07],[08],[09],[10],[11],[12],[13],[14],[15],[16],[17],[18],[19],[20],[21],[22],[23])
 ) piv;
-SELECT * FROM temp2
+
+
+				SELECT * FROM temp2
+
 
 DROP TABLE
-	STEET_BLOCK_ResidentsTotalMessageCount_and_TouristTotalMessageCount_PER_HOUR
+	STEET_BLOCK_TotalMessageCount_PER_HOUR_rowformat
+SELECT
+	LINK1.OBJECTID
+   ,FORMAT(DATEPART(HOUR, POINTS.[createdAT]),'0#') AS HOUR
+   ,COUNT(LINK1.[msgID]) AS TotalMessageCountPerHour
+INTO
+	STEET_BLOCK_TotalMessageCount_PER_HOUR_rowformat
+FROM
+	SHANGHAI_262_LINK_msgID_userID_TO_STREETBLOCK_OBJECTID AS LINK1
+JOIN
+	[dbo].[Points_Shanghai_262] AS POINTS
+ON
+	LINK1.msgID = POINTS.msgID
+GROUP BY
+	LINK1.OBJECTID
+   ,DATEPART(HOUR, POINTS.[createdAT])
+ORDER BY
+	LINK1.OBJECTID ASC
+   ,DATEPART(HOUR, POINTS.[createdAT]) ASC
+
+
+				SELECT * FROM STEET_BLOCK_TotalMessageCount_PER_HOUR_rowformat
+
+
+DROP TABLE
+	temp3
+SELECT   
+     [OBJECTID]
+	,[00] AS 'TotalMsgCnt_00'
+	,[01] AS 'TotalMsgCnt_01'
+	,[02] AS 'TotalMsgCnt_02'
+	,[03] AS 'TotalMsgCnt_03'
+	,[04] AS 'TotalMsgCnt_04'
+	,[05] AS 'TotalMsgCnt_05'
+	,[06] AS 'TotalMsgCnt_06'
+	,[07] AS 'TotalMsgCnt_07'
+	,[08] AS 'TotalMsgCnt_08'
+	,[09] AS 'TotalMsgCnt_09'
+	,[10] AS 'TotalMsgCnt_10'
+	,[11] AS 'TotalMsgCnt_11'
+	,[12] AS 'TotalMsgCnt_12'
+	,[13] AS 'TotalMsgCnt_13'
+	,[14] AS 'TotalMsgCnt_14'
+	,[15] AS 'TotalMsgCnt_15'
+	,[16] AS 'TotalMsgCnt_16'
+	,[17] AS 'TotalMsgCnt_17'
+	,[18] AS 'TotalMsgCnt_18'
+	,[19] AS 'TotalMsgCnt_19'
+	,[20] AS 'TotalMsgCnt_20'
+	,[21] AS 'TotalMsgCnt_21'
+	,[22] AS 'TotalMsgCnt_22'
+	,[23] AS 'TotalMsgCnt_23'
+INTO temp3
+FROM 
+(
+	SELECT 
+		D.OBJECTID
+		,D.HOUR AS HOUR
+		,D.TotalMessageCountPerHour
+		--,D.DistinctUserCount
+	FROM
+		STEET_BLOCK_TotalMessageCount_PER_HOUR_rowformat as D
+) src
+pivot
+(
+  sum(TotalMessageCountPerHour)
+  for HOUR in ([00],[01],[02],[03],[04],[05],[06],[07],[08],[09],[10],[11],[12],[13],[14],[15],[16],[17],[18],[19],[20],[21],[22],[23])
+) piv;
+
+
+				SELECT * FROM temp3
+
+
+
+DROP TABLE
+	STEET_BLOCK_ResidentsTotalMessageCount_and_TouristTotalMessageCount_and_TotalMessageCount_PER_HOUR
 SELECT 
 		 A.[OBJECTID]
 		,A.[ResTMsgCnt_00]
@@ -202,13 +285,44 @@ SELECT
 		,B.[TouTMsgCnt_21]
 		,B.[TouTMsgCnt_22]
 		,B.[TouTMsgCnt_23]
+		,C.[TotalMsgCnt_00]
+		,C.[TotalMsgCnt_01]
+		,C.[TotalMsgCnt_02]
+		,C.[TotalMsgCnt_03]
+		,C.[TotalMsgCnt_04]
+		,C.[TotalMsgCnt_05]
+		,C.[TotalMsgCnt_06]
+		,C.[TotalMsgCnt_07]
+		,C.[TotalMsgCnt_08]
+		,C.[TotalMsgCnt_09]
+		,C.[TotalMsgCnt_10]
+		,C.[TotalMsgCnt_11]
+		,C.[TotalMsgCnt_12]
+		,C.[TotalMsgCnt_13]
+		,C.[TotalMsgCnt_14]
+		,C.[TotalMsgCnt_15]
+		,C.[TotalMsgCnt_16]
+		,C.[TotalMsgCnt_17]
+		,C.[TotalMsgCnt_18]
+		,C.[TotalMsgCnt_19]
+		,C.[TotalMsgCnt_20]
+		,C.[TotalMsgCnt_21]
+		,C.[TotalMsgCnt_22]
+		,C.[TotalMsgCnt_23]
+		
 INTO
-	STEET_BLOCK_ResidentsTotalMessageCount_and_TouristTotalMessageCount_PER_HOUR
+	STEET_BLOCK_ResidentsTotalMessageCount_and_TouristTotalMessageCount_and_TotalMessageCount_PER_HOUR
 FROM
 	temp1 AS A 
 JOIN
 	temp2 AS B
 ON 
 	A.OBJECTID = B.OBJECTID
-SELECT * FROM STEET_BLOCK_ResidentsTotalMessageCount_and_TouristTotalMessageCount_PER_HOUR
+JOIN 
+	temp3 AS C
+ON
+	A.OBJECTID = C.OBJECTID
+
+
+				SELECT * FROM STEET_BLOCK_ResidentsTotalMessageCount_and_TouristTotalMessageCount_and_TotalMessageCount_PER_HOUR
 

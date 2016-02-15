@@ -2011,6 +2011,7 @@ SELECT
    ,SUM(SOURCE.DistinctUserCount)                                        AS DistinctUserCount
    ,SUM(SOURCE.ResidentsTotalMessageCount)                               AS ResidentsTotalMessageCount
    ,SUM(SOURCE.ResidentsTotalUserCount)                                  AS ResidentsTotalUserCount
+   ,SUM(SOURCE.DistinctUserCount)-SUM(SOURCE.ResidentsTotalUserCount)	 AS TouristsTotalUserCount
    ,MAX(CENSUS.AGE0)													 AS 'CensusAge0' -- MAX should be fine
    ,MAX(CENSUS.AGE15)												     AS 'CensusAge15'
    ,MAX(CENSUS.AGE65)												     AS 'CensusAge65'
@@ -2018,6 +2019,9 @@ SELECT
    ,MAX(CENSUS.M)														 AS 'CensusM'
    ,MAX(CENSUS.POP)														 AS 'CensusPOP'
    ,MAX(CENSUS.Address)													 AS 'CensusAddress'
+   
+   ,MAX(CENSUS.POP)/geography::UnionAggregate(SOURCE.Shape).STArea()     AS PopulationDensity
+
    ,SUM(SOURCE.MessageCount_201206)                                      AS 'MessageCount_201206'
    ,SUM(SOURCE.MessageCount_201207)                                      AS 'MessageCount_201207'
    ,SUM(SOURCE.MessageCount_201208)                                      AS 'MessageCount_201208'
@@ -2758,7 +2762,8 @@ USE [weiboDEV]
 GO
 alter table [dbo].[A_SHANGHAI_URBANDISTRICTS_final] alter column OBJECTID int not null
 
-
+USE [weiboDEV]
+GO
 /****** Object:  Index [PK_SHANGHAI_STEETBLOCKS_final]    Script Date: 2/3/2016 5:03:45 PM ******/
 ALTER TABLE [dbo].[A_SHANGHAI_URBANDISTRICTS_final] ADD  CONSTRAINT [PK_A_SHANGHAI_URBANDISTRICTS_final] PRIMARY KEY CLUSTERED 
 (
