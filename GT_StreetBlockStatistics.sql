@@ -821,6 +821,8 @@ INTO
 FROM
 	[dbo].[ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA] as SB
 
+-- g Number of messages of Residents and tourists per streetblock per HOUR
+
 
 ------------------------------------------------------------------------------------------------------
 -- 3. GET DATA FROM COHERENCE TO STREET BLOCKS
