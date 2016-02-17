@@ -846,6 +846,63 @@ ON
 ------------------------------------------------------------------------------------
 -- f LINK STREET BLOCK to nearest CENSUS POINT
 ------------------------------------------------------------------------------------
+
+DROP TABLE
+	CHINA_CENSUS_POPCENSUS2010_TOWNSHIP_SHANGHAI
+SELECT 
+	POINTS.*
+INTO 
+	CHINA_CENSUS_POPCENSUS2010_TOWNSHIP_SHANGHAI
+FROM 
+	[dbo].[CHINA_CENSUS_POPCENSUS2010_TOWNSHIP] AS POINTS
+JOIN 
+	[dbo].[GADM_CHN_ADM2_SINGLE] AS polygon
+ON 
+	POINTS.Shape.STIntersects(polygon.Shape) =1
+WHERE
+	polygon.ID_2 = 262 
+
+INSERT INTO 
+	CHINA_CENSUS_POPCENSUS2010_TOWNSHIP_SHANGHAI 
+SELECT 
+	*
+FROM 
+	[dbo].[CHINA_CENSUS_POPCENSUS2010_TOWNSHIP]
+WHERE
+	OBJECTID = 9841
+
+
+SELECT
+	*
+FROM 
+	CHINA_CENSUS_POPCENSUS2010_TOWNSHIP_SHANGHAI
+
+-- now go to ArcMAP and perform spatial join with CLOSEST method
+
+
+
+DROP TABLE
+	SHANGHAI_LINK_STREETBLOCK_OBJECTID_to_CENSUSPOINTOBJECTID
+SELECT 
+	SHAPES.OBJECTID as OBJECTID
+   ,SB.JOIN_FID as  CensusPointID
+   ,Shapes.Shape
+INTO
+	SHANGHAI_LINK_STREETBLOCK_OBJECTID_to_CENSUSPOINTOBJECTID
+FROM
+	[dbo].[LinkStreetBlockIDandCensusPointID2] as SB
+RIGHT OUTER JOIN
+	[dbo].[ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA] as SHAPES
+ON
+	SB.TARGET_FID = SHAPES.OBJECTID
+
+
+				SELECT * FROM SHANGHAI_LINK_STREETBLOCK_OBJECTID_to_CENSUSPOINTOBJECTID WHERE CensusPointID IS NULL
+				SELECT COUNT(DISTINCT OBJECTID) FROM [dbo].[ALLROADS_RIVERS_BORDERS_TO_POLYGONS_PLUS_POPDATA]
+
+
+DROP TABLE
+	SHANGHAI_LINK_STREETBLOCK_OBJECTID_to_CENSUSPOINTOBJECTID
 SELECT 
 	SB.OBJECTID
    ,SB.JOIN_FID as  CensusPointID
@@ -1191,6 +1248,7 @@ DROP TABLE
 SELECT
 	 SBS.OBJECTID
 	,SBS.Shape.STArea() AS AREASQM
+	,CAST(SBS.Shape.STArea() AS BIGINT) AS AREAINT
 	,WBf.CensusPointID AS CensusPointID
 	,WBa.TotalMessageCount AS TotalMessageCount
 	,WBa.TotalMessageCount/SBS.Shape.STArea() AS TotalMsgDensity
@@ -1998,7 +2056,13 @@ GO
 
 
 ------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
 -- 4. CREATE ONE BIG TABLE FOR URBAN DISTRICTS A_SHANGHAI_URBANDISTRICTS_final
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 DROP TABLE
 	A_SHANGHAI_URBANDISTRICTS_final
