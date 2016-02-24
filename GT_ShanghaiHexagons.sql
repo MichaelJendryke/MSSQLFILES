@@ -1,0 +1,22 @@
+SELECT 
+	P.msgID
+	,H.OBJECTID
+INTO 
+	LINK_SHANGHAI_msgID_to_HexagonOID
+FROM 
+	[dbo].[Points_Shanghai_262] AS P
+JOIN
+	[dbo].[SHANGHAI_HEXAGONS_r500m] AS H
+ON
+	P.location.STIntersects(H.Shape) =1
+WHERE 
+	P.userID NOT IN (Select userID FROM badusers)
+
+SELECT 
+	* 
+FROM
+	[dbo].[SHANGHAI_HEXAGONS_r500m] AS H
+JOIN
+	(SELECT COUNT(msgID) AS msgCNT, OBJECTID as OID FROM LINK_SHANGHAI_msgID_to_HexagonOID GROUP BY [OBJECTID]) AS C
+ON
+	H.OBJECTID = C.OID
